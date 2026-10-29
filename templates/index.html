@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="theme-color" content="#111827">
+    <title>InsightSQL | Ask your employee database</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="InsightSQL home">
+          <span class="brand-mark" aria-hidden="true">IS</span>
+          <span>Insight<span class="brand-accent">SQL</span></span>
+        </a>
+        <div class="local-badge"><span aria-hidden="true"></span> Local &amp; read-only</div>
+      </header>
+
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">EMPLOYEE MANAGEMENT DATABASE</p>
+        <h1 id="page-title">Ask your data a question.</h1>
+        <p class="intro-copy">
+          Ask in plain English. InsightSQL generates a read-only query and shows
+          the SQL before displaying results.
+        </p>
+      </section>
+
+      <section class="workspace" aria-label="Query workspace">
+        <div class="query-panel panel">
+          <form id="query-form">
+            <label for="question">Your question</label>
+            <textarea
+              id="question"
+              name="question"
+              rows="3"
+              maxlength="1000"
+              placeholder="Which employees work in Engineering?"
+              required
+            ></textarea>
+            <div class="form-footer">
+              <span class="hint">Use plain language. No SQL required.</span>
+              <button id="submit-button" class="primary-button" type="submit">
+                <span class="button-label">Generate &amp; run</span>
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </form>
+
+          <div class="examples" aria-label="Example questions">
+            <span class="examples-label">TRY</span>
+            <button type="button" class="example-chip" data-question="List the departments and their annual budgets">Departments and budgets</button>
+            <button type="button" class="example-chip" data-question="Show employees with their department names">Employees by department</button>
+            <button type="button" class="example-chip" data-question="Which projects are active?">Active projects</button>
+          </div>
+        </div>
+
+        <div id="status-message" class="status-message" role="status" aria-live="polite" hidden></div>
+
+        <section id="result-panel" class="result-panel panel" aria-labelledby="result-title" hidden>
+          <div class="result-heading">
+            <div>
+              <p class="eyebrow">QUERY RESULTS</p>
+              <h2 id="result-title">Results</h2>
+            </div>
+            <span id="row-count" class="row-count"></span>
+          </div>
+          <details class="sql-details">
+            <summary><span>View generated SQL</span><span class="summary-chevron" aria-hidden="true">⌄</span></summary>
+            <pre><code id="sql-output"></code></pre>
+          </details>
+          <div id="table-container" class="table-container"></div>
+          <p id="truncated-message" class="truncated-message" hidden></p>
+        </section>
+
+        <section class="history-section" aria-labelledby="history-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">YOUR RECENT ACTIVITY</p>
+              <h2 id="history-title">Query history</h2>
+            </div>
+            <button id="refresh-history" class="text-button" type="button">Refresh</button>
+          </div>
+          <p class="history-note">Stored locally on this computer; kept for up to 30 days or 500 queries.</p>
+          <div id="history-list" class="history-list">
+            <p class="empty-state">Loading your recent queries…</p>
+          </div>
+        </section>
+      </section>
+
+      <footer class="footer">
+        <span>Powered by a local Ollama model</span>
+        <span>Employee records stay on this machine</span>
+      </footer>
+    </main>
+  </body>
+</html>
